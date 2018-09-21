@@ -9,15 +9,16 @@ import { paginate } from "../utils/paginate";
 class Movies extends Component {
   state = {
     movies: [],
-    pageSize: 4,
+    pageSize: 2,
     currentPage: 1,
     genres: [],
-    currentGenre: 1
+    currentGenre: null
   };
 
   handleDelete = movie => {
     deleteMovie(movie._id);
     this.setState({ movies: getMovies() });
+    //this.handlePageChange
   };
 
   handleLike = movie => {
@@ -29,6 +30,10 @@ class Movies extends Component {
 
   handlePageChange = page => {
     this.setState({ currentPage: page });
+  };
+
+  handleGenreChange = genre => {
+    this.setState({ currentGenre: genre, currentPage: 1 });
   };
 
   render() {
@@ -43,7 +48,13 @@ class Movies extends Component {
     if (allMovies.length === 0)
       return <span>There are no movies in the database.</span>;
 
-    let moviesbyGenre = allMovies.filter(m => m.genre.name === "Action");
+    let moviesbyGenre =
+      currentGenre._id === "0"
+        ? allMovies
+        : allMovies.filter(m => m.genre._id === currentGenre._id);
+
+    /*     if (moviesbyGenre.length <= pageSize && currentPage > 1)
+      this.handlePageChange(currentPage - 1); */
     const movies = paginate(moviesbyGenre, currentPage, pageSize);
 
     return (
@@ -51,8 +62,9 @@ class Movies extends Component {
         <div className="row">
           <div className="col-3">
             <ListGroup
-              items={genres.map(g => g.name)}
+              items={genres}
               currentItem={currentGenre}
+              onItemChange={this.handleGenreChange}
             />
           </div>
           <div className="col">
@@ -100,8 +112,9 @@ class Movies extends Component {
 
   componentDidMount() {
     const movies = getMovies();
-    const genres = [{ _id: "0", name: "All Genres" }, ...getGenres()];
-    this.setState({ movies, genres });
+    const currentGenre = { _id: "0", name: "All Genres" };
+    const genres = [currentGenre, ...getGenres()];
+    this.setState({ movies, currentGenre, genres });
   }
 
   renderHeader() {
