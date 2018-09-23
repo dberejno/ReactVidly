@@ -5,9 +5,7 @@ import PropTypes from "prop-types";
 // input: number of rows, number of rows per page, current page
 // output: onClick (page number)
 
-const Pagination = props => {
-  const { itemsCount, pageSize, currentPage, onPageChange } = props;
-
+const Pagination = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   const pagesCount = Math.ceil(itemsCount / pageSize);
   const pages = _.range(1, pagesCount + 1);
 

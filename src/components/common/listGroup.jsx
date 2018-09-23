@@ -1,31 +1,45 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const ListGroup = props => {
+const ListGroup = ({
+  items,
+  selectedItem,
+  textProperty,
+  valueProperty,
+  onItemSelect
+}) => {
   return (
     <ul className="list-group">
-      {props.items.map(item => (
+      {items.map(item => (
         <li
-          className="list-group-item"
-          key={item._id}
-          onClick={() => props.onItemChange(item)}
+          style={{ cursor: "pointer" }}
+          className={
+            item === selectedItem ? "list-group-item active" : "list-group-item"
+          }
+          key={item[valueProperty]}
+          onClick={() => onItemSelect(item)}
         >
-          {item.name}
+          {item[textProperty]}
         </li>
       ))}
     </ul>
   );
 };
 
+ListGroup.defaultProps = {
+  textProperty: "name",
+  valueProperty: "_id"
+};
+
 ListGroup.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({ _id: PropTypes.string, name: PropTypes.string })
   ).isRequired,
-  currentItem: PropTypes.shape({
+  selectedItem: PropTypes.shape({
     _id: PropTypes.string,
     name: PropTypes.string
   }).isRequired,
-  onItemChange: PropTypes.func.isRequired
+  onItemSelect: PropTypes.func.isRequired
 };
 
 export default ListGroup;
