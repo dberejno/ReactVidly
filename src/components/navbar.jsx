@@ -1,13 +1,12 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
-import Movies from "./movies";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <a className="navbar-brand mb-0 h1" href="#">
+      <NavLink className="navbar-brand mb-0 h1" to="/">
         Vidly
-      </a>
+      </NavLink>
       <button
         className="navbar-toggler"
         type="button"
