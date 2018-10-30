@@ -6,7 +6,6 @@ import { getMovies, deleteMovie } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
 import { paginate } from "../utils/paginate";
 import _ from "lodash";
-import { Link } from "react-router-dom";
 
 class Movies extends Component {
   state = {
@@ -18,13 +17,8 @@ class Movies extends Component {
     sortColumn: { path: "title", order: "asc" }
   };
 
-  getMovieLink(movie) {
-    return <Link to={"/movies/" + movie._id}>movie.title</Link>;
-  }
-
   componentDidMount() {
     var movies = getMovies();
-
     const selectedGenre = { _id: "0", name: "All Genres" };
     const genres = [selectedGenre, ...getGenres()];
     this.setState({ movies, selectedGenre, genres });
